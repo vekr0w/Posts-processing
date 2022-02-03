@@ -3,14 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { IndexComponent } from './posts/index/index.component';
-import { ViewComponent } from './posts/view/view.component';
-import { EditComponent } from './posts/edit/edit.component';
-import { AddComponent } from './posts/add/add.component';
+import { PostsModule } from './posts/posts.module';
 
 @NgModule({
-  declarations: [AppComponent, IndexComponent, ViewComponent, EditComponent, AddComponent],
-  imports: [BrowserModule, AppRoutingModule],
+  declarations: [AppComponent],
+  imports: [BrowserModule, AppRoutingModule, PostsModule],
   providers: [],
   bootstrap: [AppComponent],
 })
