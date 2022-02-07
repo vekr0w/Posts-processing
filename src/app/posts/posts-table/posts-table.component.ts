@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PeriodicElement } from '../shared/models/shared.models';
+import { Router } from '@angular/router';
 
 const ELEMENT_DATA: PeriodicElement[] = [
   { id: 1, title: 'Hydrogen', description: 'H' },
@@ -32,16 +33,41 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./posts-table.component.scss'],
 })
 export class PostsTableComponent {
-  displayedColumns: string[] = ['id', 'title', 'description', 'actions'];
-  dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  public displayedColumns: string[] = ['id', 'title', 'description', 'actions'];
+  public dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  constructor(private router: Router) {}
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
   }
-  // displayedColumns: string[] = ['id', 'id', 'title', 'completed', 'actions'];
-  // displayedColumns: string[] = ['id', 'title', 'weight', 'description' , 'actions'];
-  // dataSource = ELEMENT_DATA;
-  // constructor() {}
+
+  goToPage(element: PeriodicElement, event: any): void {
+    const action: string = event.target.innerText;
+
+    switch (action) {
+      case 'Edit':
+        this.goToEditPage(element.id);
+        break;
+      case 'Delete':
+        this.deleteItem(element.id);
+        break;
+
+      default:
+        this.goToDetails(element.id);
+        break;
+    }
+  }
+
+  goToEditPage(id: number): void {
+    this.router.navigateByUrl(`posts/edit/${id}`);
+  }
+  deleteItem(id: number): void {
+    console.log('Im deleting');
+  }
+  goToDetails(id: number): void {
+    this.router.navigateByUrl(`posts/${id}`);
+  }
 }

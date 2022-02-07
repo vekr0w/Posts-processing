@@ -1,7 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { AddComponent } from './posts/add/add.component';
-import { EditComponent } from './posts/edit/edit.component';
 import { PostComponent } from './posts/post/post.component';
 import { PostsComponent } from './posts/posts.component';
 
@@ -10,8 +8,8 @@ import { PostsComponent } from './posts/posts.component';
 const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' },
   { path: 'posts', component: PostsComponent },
-  { path: 'posts/add', component: AddComponent },
-  { path: 'posts/edit/:id', component: EditComponent },
+  { path: 'posts/add', component: PostComponent },
+  { path: 'posts/edit/:id', component: PostComponent },
   { path: 'posts/:id', component: PostComponent },
 ];
 
