@@ -10,8 +10,8 @@ import { PostsComponent } from './posts/posts.component';
 const routes: Routes = [
   { path: '', redirectTo: '/posts', pathMatch: 'full' },
   { path: 'posts', component: PostsComponent },
-  { path: 'posts/edit', component: EditComponent },
   { path: 'posts/add', component: AddComponent },
+  { path: 'posts/edit/:id', component: EditComponent },
   { path: 'posts/:id', component: PostComponent },
 ];
 

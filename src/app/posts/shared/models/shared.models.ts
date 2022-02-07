@@ -4,3 +4,9 @@ export interface Post {
   title: string;
   completed: boolean;
 }
+
+export interface PeriodicElement {
+  id: number;
+  title: string;
+  description: string;
+}
