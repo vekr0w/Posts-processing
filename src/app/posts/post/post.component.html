@@ -1,7 +1,3 @@
-<!-- <p>"userId": 1,</p>
-<p>"id": 1</p>
-<p>"title": "delectus aut autem"</p>
-<p>"completed": false</p> -->
 <div class="form-wrapper">
   <div class="input-wrapper">
     <mat-label for="postId">post ID</mat-label>
@@ -33,7 +29,7 @@
       class="input-field"
       type="text"
       [value]="postTitle"
-      [disabled]="!isEditable"
+      [disabled]="!isEditPage || isEditable"
     />
   </div>
   <div class="input-wrapper">
@@ -44,7 +40,7 @@
       class="input-field"
       type="text"
       [value]="postStatus"
-      [disabled]="!isEditable"
+      [disabled]="!isEditPage || isEditable"
     />
   </div>
 </div>
@@ -54,14 +50,14 @@
     Add
   </button>
   <a
-    *ngIf="!isEditable && !canAdd"
+    *ngIf="!isEditPage && !canAdd"
     mat-button
     class="button-header"
     (click)="goToEditPage(postId)"
     >Edit</a
   >
   <button
-    *ngIf="isEditable"
+    *ngIf="isEditPage"
     mat-button
     class="button-header"
     (click)="goToPosts()"

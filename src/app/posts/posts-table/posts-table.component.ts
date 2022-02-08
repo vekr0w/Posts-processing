@@ -1,8 +1,15 @@
-import { Component, ViewChild } from '@angular/core';
+import {
+  AfterViewInit,
+  Component,
+  OnDestroy,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 import { PeriodicElement } from '../shared/models/shared.models';
 import { Router } from '@angular/router';
+import { PostsDataService } from '../shared/services/posts-data.service';
 
 const ELEMENT_DATA: PeriodicElement[] = [
   { id: 1, title: 'Hydrogen', description: 'H' },
@@ -32,13 +39,22 @@ const ELEMENT_DATA: PeriodicElement[] = [
   templateUrl: './posts-table.component.html',
   styleUrls: ['./posts-table.component.scss'],
 })
-export class PostsTableComponent {
+export class PostsTableComponent implements OnDestroy, AfterViewInit, OnInit {
   public displayedColumns: string[] = ['id', 'title', 'description', 'actions'];
   public dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private postDataService: PostsDataService
+  ) {}
+  ngOnInit(): void {
+    this.postDataService.getPosts().subscribe({
+      next: (v) => console.log(v),
+      error: (e) => console.log(e.name),
+    });
+  }
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
@@ -70,4 +86,6 @@ export class PostsTableComponent {
   goToDetails(id: number): void {
     this.router.navigateByUrl(`posts/${id}`);
   }
+
+  ngOnDestroy(): void {}
 }

@@ -7,7 +7,8 @@ import { Router, ActivatedRoute } from '@angular/router';
   styleUrls: ['./post.component.scss'],
 })
 export class PostComponent implements OnInit {
-  public isEditable = this.router.url.includes('edit');
+  public isEditable = false;
+  public isEditPage = this.router.url.includes('edit');
   public canAdd = this.router.url.includes('add');
   public postId = this.activatedRoute.snapshot.paramMap.get('id');
   public userId: any = 123;
