@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Route, Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-post',
@@ -8,11 +8,29 @@ import { Route, Router, ActivatedRoute } from '@angular/router';
 })
 export class PostComponent implements OnInit {
   public isEditable = this.router.url.includes('edit');
+  public canAdd = this.router.url.includes('add');
   public postId = this.activatedRoute.snapshot.paramMap.get('id');
-
+  public userId: any = 123;
+  public postTitle = 'Test title';
+  public postStatus = 'Some test description';
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    if (this.canAdd) {
+      this.postId = '';
+      this.userId = '';
+      this.postTitle = '';
+      this.postStatus = '';
+      this.isEditable = true;
+    }
+  }
 
-  // change url to posts/edit/id 
+  goToEditPage(id: any): void {
+    this.router.navigateByUrl(`posts/edit/${id}`);
+  }
+  goToPosts() {
+    this.router.navigateByUrl(`posts`);
+  }
+  // change url to posts/edit/id
+  // send edit request to service
 }
