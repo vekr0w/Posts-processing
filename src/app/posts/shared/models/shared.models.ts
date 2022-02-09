@@ -4,9 +4,3 @@ export interface Post {
   title: string;
   body: string;
 }
-
-export interface PeriodicElement {
-  id: number;
-  title: string;
-  description: string;
-}

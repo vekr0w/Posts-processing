@@ -3,7 +3,7 @@
     <ng-container matColumnDef="id">
       <th mat-header-cell *matHeaderCellDef>ID</th>
       <td mat-cell *matCellDef="let element">
-        <a mat-button (click)="goToPage(element, $event)">{{ element.id }}</a>
+        <a mat-button (click)="goToDetails(element.id)">{{ element.id }}</a>
       </td>
     </ng-container>
 
@@ -15,14 +15,14 @@
     <ng-container matColumnDef="title">
       <th mat-header-cell *matHeaderCellDef>Title</th>
       <td mat-cell *matCellDef="let element">
-        {{ shortenTextContent(element.title, 10) }}
+        {{ truncateTextContent(element.title, 10) }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="description">
       <th mat-header-cell *matHeaderCellDef>Description</th>
       <td mat-cell *matCellDef="let element">
-        {{ shortenTextContent(element.body, 50) }}
+        {{ truncateTextContent(element.body, 70) }}
       </td>
     </ng-container>
 
@@ -32,19 +32,19 @@
         <a
           mat-button
           class="button-primary mar-x-5"
-          (click)="goToPage(element, $event)"
+          (click)="goToEditPage(element.id)"
           >Edit</a
         >
         <a
           mat-button
           class="button-primary mar-x-5"
-          (click)="goToPage(element, $event)"
+          (click)="goToDetails(element.id)"
           >Details</a
         >
         <a
           mat-button
           class="button-delete mar-x-5"
-          (click)="goToPage(element, $event)"
+          (click)="deleteItem(element.id)"
           >Delete</a
         >
       </td>
