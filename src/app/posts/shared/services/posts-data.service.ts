@@ -23,6 +23,10 @@ export class PostsDataService {
   }
 
   getPostById(id: number) {
-    return this.http.get(`${baseUrl}/${id}`);
+    return this.http.get<Post>(`${baseUrl}/${id}`);
+  }
+
+  updatePost(id: number, changes: {}) {
+    return this.http.patch(`${baseUrl}/${id}`, { ...changes });
   }
 }

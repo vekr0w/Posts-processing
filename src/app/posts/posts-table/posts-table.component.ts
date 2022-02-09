@@ -42,6 +42,8 @@ export class PostsTableComponent implements OnDestroy, OnInit {
   }
 
   goToEditPage(id: number): void {
+    console.log(id);
+
     this.router.navigateByUrl(`posts/edit/${id}`);
   }
 
@@ -74,7 +76,7 @@ export class PostsTableComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    this.getPostsSubscription.unsubscribe();
-    this.deletePostSubscription.unsubscribe();
+    // this.getPostsSubscription.unsubscribe();
+    // this.deletePostSubscription.unsubscribe();
   }
 }

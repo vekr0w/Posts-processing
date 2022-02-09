@@ -6,7 +6,7 @@
       id="postId"
       class="input-field"
       type="number"
-      [value]="postId"
+      [value]="post.id"
       disabled="true"
     />
   </div>
@@ -17,7 +17,7 @@
       id="userId"
       class="input-field"
       type="number"
-      [value]="userId"
+      [value]="post.userId"
       disabled="true"
     />
   </div>
@@ -28,29 +28,36 @@
       id="title"
       class="input-field"
       type="text"
-      [value]="postTitle"
-      [disabled]="!isEditPage || isEditable"
+      [(ngModel)]="post.title"
+      [value]="post.title"
+      [disabled]="canEdit()"
     />
   </div>
   <div class="input-wrapper">
-    <mat-label for="status">Status</mat-label>
+    <mat-label for="status">Description</mat-label>
     <input
       matInput
       id="status"
       class="input-field"
       type="text"
-      [value]="postStatus"
-      [disabled]="!isEditPage || isEditable"
+      [(ngModel)]="post.body"
+      [value]="post.body"
+      [disabled]="canEdit()"
     />
   </div>
 </div>
 
 <div class="controls">
-  <button *ngIf="canAdd" mat-button class="button-header" (click)="goToPosts()">
+  <button
+    *ngIf="canAddNew"
+    mat-button
+    class="button-header"
+    (click)="goToPosts()"
+  >
     Add
   </button>
   <a
-    *ngIf="!isEditPage && !canAdd"
+    *ngIf="!isEditPage && !canAddNew"
     mat-button
     class="button-header"
     (click)="goToEditPage(postId)"
@@ -60,7 +67,7 @@
     *ngIf="isEditPage"
     mat-button
     class="button-header"
-    (click)="goToPosts()"
+    (click)="sendUpdatedPostData()"
   >
     Done
   </button>
