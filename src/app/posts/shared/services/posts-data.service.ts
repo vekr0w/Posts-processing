@@ -7,6 +7,8 @@ import { Post } from '../models/shared.models';
   providedIn: 'root',
 })
 export class PostsDataService {
+  private currentPosts: Post[];
+
   constructor(private http: HttpClient) {}
 
   getPostsRequest() {
@@ -28,5 +30,8 @@ export class PostsDataService {
 
   updatePost(id: number, changes: {}) {
     return this.http.patch(`${baseUrl}/${id}`, { ...changes });
+  }
+  sendNewPost(newPost: {}) {
+    return this.http.post(baseUrl, newPost);
   }
 }

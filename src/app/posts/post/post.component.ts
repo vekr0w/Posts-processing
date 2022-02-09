@@ -1,61 +1,99 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, OnInit } from '@angular/core';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Post } from '../shared/models/shared.models';
 import { PostsDataService } from '../shared/services/posts-data.service';
 
 @Component({
   selector: 'app-post',
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
+  host: { style: 'width:90%; height:70%' },
 })
-export class PostComponent implements OnInit {
+export class PostComponent implements OnInit, AfterViewInit {
   public isEditable = false;
   public isEditPage = this.router.url.includes('edit');
   public canAddNew = this.router.url.includes('add');
   public postId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-  public post: Post;
+  public postForm: FormGroup;
+
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private postsDataService: PostsDataService
+    private postsDataService: PostsDataService,
+    private fb: FormBuilder
   ) {}
 
   ngOnInit(): void {
     if (this.canAddNew) {
-      this.post = {
-        userId: 0,
-        id: 0,
-        title: '',
-        body: '',
-      };
+      this.postForm = new FormGroup({
+        id: new FormControl(0),
+        userId: new FormControl(0),
+        title: new FormControl('', Validators.required),
+        body: new FormControl('', Validators.required),
+      });
       this.isEditable = true;
     } else {
       this.postsDataService.getPostById(this.postId).subscribe({
-        next: (p) => (this.post = p),
+        next: (post) => {
+          this.postForm = new FormGroup({
+            id: new FormControl(post.id),
+            userId: new FormControl(post.userId),
+            title: new FormControl(post.title, Validators.required),
+            body: new FormControl(post.body, Validators.required),
+          });
+        },
       });
     }
   }
 
-  sendUpdatedPostData() {
-    this.postsDataService.updatePost(this.post.id, this.post).subscribe({
-      next: (el) => console.log(el),
-      error: (err) => console.log(err),
-    });
+  ngAfterViewInit(): void {
+    this.postForm.controls['userId'].disable();
+    this.postForm.controls['id'].disable();
+    if (!this.canEdit()) {
+      this.postForm.controls['title'].disable();
+      this.postForm.controls['body'].disable();
+    } else {
+      this.postForm.controls['title'].enable();
+      this.postForm.controls['body'].enable();
+    }
   }
 
-  updateLocalPostData() {}
+  sendUpdatedPostData() {
+    this.postsDataService
+      .updatePost(this.postId, this.postForm.value)
+      .subscribe({
+        next: (el) => console.log(el),
+        error: (err) => console.log(err),
+      });
+  }
+
+  sendPost() {
+    if (this.postForm.valid) {
+      this.postsDataService.sendNewPost(this.postForm.value).subscribe({
+        next: (el) => console.log(el),
+      });
+      this.router.navigateByUrl('posts');
+    } else {
+      alert(`The form status is: ${this.postForm.valid}`);
+    }
+  }
 
   goToEditPage(id: any): void {
     this.router.navigateByUrl(`posts/edit/${id}`);
   }
-  goToPosts() {
-    this.router.navigateByUrl(`posts`);
-  }
 
   canEdit(): boolean {
     const test = this.isEditPage || this.isEditable;
-    return !test;
+    return test;
   }
+
+  inputEnabler() {}
+  // Form
 }
 
 /*

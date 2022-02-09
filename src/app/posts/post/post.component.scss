@@ -1,15 +1,21 @@
 @import url(../../styles/_shared-classes.scss);
 
+form {
+}
+
 .form-wrapper {
   display: flex;
   flex-flow: column;
   gap: 20px;
   .input-wrapper {
+    margin: auto;
+    width: 50%;
     align-items: center;
     display: flex;
     flex-flow: column;
     gap: 5px;
   }
+
   mat-label {
     color: #ffffff;
   }

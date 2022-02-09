@@ -1,74 +1,72 @@
-<div class="form-wrapper">
-  <div class="input-wrapper">
-    <mat-label for="postId">post ID</mat-label>
-    <input
-      matInput
-      id="postId"
-      class="input-field"
-      type="number"
-      [value]="post.id"
-      disabled="true"
-    />
-  </div>
-  <div class="input-wrapper">
-    <mat-label for="userId">user ID</mat-label>
-    <input
-      matInput
-      id="userId"
-      class="input-field"
-      type="number"
-      [value]="post.userId"
-      disabled="true"
-    />
-  </div>
-  <div class="input-wrapper">
-    <mat-label for="title">Title</mat-label>
-    <input
-      matInput
-      id="title"
-      class="input-field"
-      type="text"
-      [(ngModel)]="post.title"
-      [value]="post.title"
-      [disabled]="canEdit()"
-    />
-  </div>
-  <div class="input-wrapper">
-    <mat-label for="status">Description</mat-label>
-    <input
-      matInput
-      id="status"
-      class="input-field"
-      type="text"
-      [(ngModel)]="post.body"
-      [value]="post.body"
-      [disabled]="canEdit()"
-    />
-  </div>
-</div>
+<form [formGroup]="postForm" *ngIf="postForm">
+  <div class="form-wrapper">
+    <div class="input-wrapper">
+      <mat-label for="postId">post ID</mat-label>
+      <input
+        matInput
+        id="postId"
+        class="input-field"
+        type="number"
+        formControlName="id"
+      />
+    </div>
+    <div class="input-wrapper">
+      <mat-label for="userId">user ID</mat-label>
+      <input
+        matInput
+        id="userId"
+        class="input-field"
+        type="number"
+        formControlName="userId"
+      />
+    </div>
+    <div class="input-wrapper text-area">
+      <mat-label for="title">Title</mat-label>
+      <textarea
+        matInput
+        id="title"
+        class="input-field"
+        type="text"
+        formControlName="title"
+      ></textarea>
+    </div>
+    <div class="input-wrapper text-area">
+      <mat-label for="status">Description</mat-label>
+      <textarea
+        matInput
+        id="status"
+        class="input-field"
+        type="text"
+        formControlName="body"
+      ></textarea>
+    </div>
 
-<div class="controls">
-  <button
-    *ngIf="canAddNew"
-    mat-button
-    class="button-header"
-    (click)="goToPosts()"
-  >
-    Add
-  </button>
-  <a
-    *ngIf="!isEditPage && !canAddNew"
-    mat-button
-    class="button-header"
-    (click)="goToEditPage(postId)"
-    >Edit</a
-  >
-  <button
-    *ngIf="isEditPage"
-    mat-button
-    class="button-header"
-    (click)="sendUpdatedPostData()"
-  >
-    Done
-  </button>
-</div>
+    <div class="controls">
+      <button
+        *ngIf="canAddNew"
+        mat-button
+        class="button-header"
+        (click)="sendPost()"
+        type="submit"
+      >
+        Add
+      </button>
+      <a
+        *ngIf="!isEditPage && !canAddNew"
+        mat-button
+        class="button-header"
+        (click)="goToEditPage(postId)"
+        >Edit</a
+      >
+      <button
+        *ngIf="isEditPage"
+        mat-button
+        class="button-header"
+        (click)="sendUpdatedPostData()"
+        type="submit"
+      >
+        Done
+      </button>
+    </div>
+  </div>
+</form>
