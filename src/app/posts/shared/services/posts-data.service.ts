@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 import { baseUrl } from 'src/app/config/variables';
 import { Post } from '../models/shared.models';
 
@@ -7,31 +8,29 @@ import { Post } from '../models/shared.models';
   providedIn: 'root',
 })
 export class PostsDataService {
-  private currentPosts: Post[];
-
   constructor(private http: HttpClient) {}
 
-  getPostsRequest() {
+  public getPostsRequest(): Observable<Post[]> {
     return this.http.get<Post[]>(baseUrl);
   }
 
-  deletePostRequest(id: number) {
+  public deletePostRequest(id: number): Observable<any> {
     return this.http.delete(`${baseUrl}/${id}`);
   }
-  deleteLocalPost(postId: number, posts: Post[]): Post[] {
+  public deleteLocalPost(postId: number, posts: Post[]): Post[] {
     const postIndex = posts.findIndex((el) => el.id === postId);
     posts.splice(postIndex, 1);
     return posts;
   }
 
-  getPostById(id: number) {
+  public getPostById(id: number): Observable<Post> {
     return this.http.get<Post>(`${baseUrl}/${id}`);
   }
 
-  updatePost(id: number, changes: {}) {
+  public updatePost(id: number, changes: {}): Observable<any> {
     return this.http.patch(`${baseUrl}/${id}`, { ...changes });
   }
-  sendNewPost(newPost: {}) {
+  public sendNewPost(newPost: {}): Observable<any> {
     return this.http.post(baseUrl, newPost);
   }
 }

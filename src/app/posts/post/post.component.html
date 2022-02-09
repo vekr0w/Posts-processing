@@ -47,7 +47,7 @@
         mat-button
         class="button-header"
         (click)="sendPost()"
-        type="submit"
+        type="button"
       >
         Add
       </button>
@@ -55,6 +55,7 @@
         *ngIf="!isEditPage && !canAddNew"
         mat-button
         class="button-header"
+        type="button"
         (click)="goToEditPage(postId)"
         >Edit</a
       >
@@ -63,7 +64,7 @@
         mat-button
         class="button-header"
         (click)="sendUpdatedPostData()"
-        type="submit"
+        type="button"
       >
         Done
       </button>

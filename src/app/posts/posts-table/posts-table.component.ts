@@ -4,15 +4,14 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Post } from '../shared/models/shared.models';
 import { Router } from '@angular/router';
 import { PostsDataService } from '../shared/services/posts-data.service';
-import { Subscription } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs';
 @Component({
   selector: 'app-posts-table',
   templateUrl: './posts-table.component.html',
   styleUrls: ['./posts-table.component.scss'],
 })
 export class PostsTableComponent implements OnDestroy, OnInit {
-  private getPostsSubscription: Subscription;
-  private deletePostSubscription: Subscription;
+  private unsubscribe$ = new Subject();
   public ELEMENT_DATA: Post[];
   public displayedColumns: string[] = [
     'id',
@@ -30,8 +29,9 @@ export class PostsTableComponent implements OnDestroy, OnInit {
     private postDataService: PostsDataService
   ) {}
   ngOnInit(): void {
-    this.getPostsSubscription = this.postDataService
+    this.postDataService
       .getPostsRequest()
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: (posts) => {
           this.ELEMENT_DATA = posts;
@@ -42,8 +42,6 @@ export class PostsTableComponent implements OnDestroy, OnInit {
   }
 
   goToEditPage(id: number): void {
-    console.log(id);
-
     this.router.navigateByUrl(`posts/edit/${id}`);
   }
 
@@ -62,8 +60,9 @@ export class PostsTableComponent implements OnDestroy, OnInit {
 
   deleteItem(id: number): void {
     if (confirm(`Are you sure you want to delete the post with ID: ${id}`)) {
-      this.deletePostSubscription = this.postDataService
+      this.postDataService
         .deletePostRequest(id)
+        .pipe(takeUntil(this.unsubscribe$))
         .subscribe({
           error: (error) => alert(error),
         });
@@ -76,7 +75,7 @@ export class PostsTableComponent implements OnDestroy, OnInit {
   }
 
   ngOnDestroy(): void {
-    // this.getPostsSubscription.unsubscribe();
-    // this.deletePostSubscription.unsubscribe();
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
   }
 }

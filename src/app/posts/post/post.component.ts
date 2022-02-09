@@ -1,11 +1,13 @@
-import { AfterViewInit, Component, OnInit } from '@angular/core';
 import {
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  OnDestroy,
+  OnInit,
+} from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
+import { Subject, takeUntil } from 'rxjs';
 import { PostsDataService } from '../shared/services/posts-data.service';
 
 @Component({
@@ -13,41 +15,45 @@ import { PostsDataService } from '../shared/services/posts-data.service';
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.scss'],
   host: { style: 'width:90%; height:70%' },
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class PostComponent implements OnInit, AfterViewInit {
+export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
+  private unsubscribe$ = new Subject();
   public isEditable = false;
   public isEditPage = this.router.url.includes('edit');
   public canAddNew = this.router.url.includes('add');
   public postId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-  public postForm: FormGroup;
+  public postForm = new FormGroup({
+    id: new FormControl(0),
+    userId: new FormControl(0),
+    title: new FormControl('', Validators.required),
+    body: new FormControl('', Validators.required),
+  });
 
   constructor(
     private router: Router,
     private activatedRoute: ActivatedRoute,
-    private postsDataService: PostsDataService,
-    private fb: FormBuilder
+    private postsDataService: PostsDataService
   ) {}
 
   ngOnInit(): void {
     if (this.canAddNew) {
-      this.postForm = new FormGroup({
-        id: new FormControl(0),
-        userId: new FormControl(0),
-        title: new FormControl('', Validators.required),
-        body: new FormControl('', Validators.required),
-      });
       this.isEditable = true;
     } else {
-      this.postsDataService.getPostById(this.postId).subscribe({
-        next: (post) => {
-          this.postForm = new FormGroup({
-            id: new FormControl(post.id),
-            userId: new FormControl(post.userId),
-            title: new FormControl(post.title, Validators.required),
-            body: new FormControl(post.body, Validators.required),
-          });
-        },
-      });
+      this.postsDataService
+        .getPostById(this.postId)
+        .pipe(takeUntil(this.unsubscribe$))
+        .subscribe({
+          next: (post) => {
+            this.postForm.setValue({
+              id: post.id,
+              userId: post.userId,
+              title: post.title,
+              body: post.body,
+            });
+          },
+          error: (err) => alert(err),
+        });
     }
   }
 
@@ -66,16 +72,17 @@ export class PostComponent implements OnInit, AfterViewInit {
   sendUpdatedPostData() {
     this.postsDataService
       .updatePost(this.postId, this.postForm.value)
+      .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
-        next: (el) => console.log(el),
         error: (err) => console.log(err),
       });
+    this.router.navigateByUrl('posts');
   }
 
   sendPost() {
     if (this.postForm.valid) {
       this.postsDataService.sendNewPost(this.postForm.value).subscribe({
-        next: (el) => console.log(el),
+        error: (error) => alert(error),
       });
       this.router.navigateByUrl('posts');
     } else {
@@ -92,14 +99,8 @@ export class PostComponent implements OnInit, AfterViewInit {
     return test;
   }
 
-  inputEnabler() {}
-  // Form
+  ngOnDestroy(): void {
+    this.unsubscribe$.next(true);
+    this.unsubscribe$.complete();
+  }
 }
-
-/*
-0. Implement angular form
-1. Implement clean input fields/text-area - done
-2. Implement preloaded data - done
-3. Implement edit button functionality - done
-4. Implement add button functionaility
-*/
