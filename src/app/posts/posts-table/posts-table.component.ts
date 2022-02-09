@@ -102,5 +102,9 @@ export class PostsTableComponent implements OnDestroy, AfterViewInit, OnInit {
     this.router.navigateByUrl(`posts/${id}`);
   }
 
+  shortenTextContent(text: string, index: number): string {
+    return text.length > index ? `${text.slice(0, index)}...` : text;
+  }
+
   ngOnDestroy(): void {}
 }
