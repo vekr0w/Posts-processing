@@ -7,32 +7,36 @@ import {
 } from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
-import { PeriodicElement } from '../shared/models/shared.models';
+import { Post } from '../shared/models/shared.models';
 import { Router } from '@angular/router';
 import { PostsDataService } from '../shared/services/posts-data.service';
 
-const ELEMENT_DATA: PeriodicElement[] = [
-  { id: 1, title: 'Hydrogen', description: 'H' },
-  { id: 2, title: 'Helium', description: 'He' },
-  { id: 3, title: 'Lithium', description: 'Li' },
-  { id: 4, title: 'Beryllium', description: 'Be' },
-  { id: 5, title: 'Boron', description: 'B' },
-  { id: 6, title: 'Carbon', description: 'C' },
-  { id: 7, title: 'Nitrogen', description: 'N' },
-  { id: 8, title: 'Oxygen', description: 'O' },
-  { id: 9, title: 'Fluorine', description: 'F' },
-  { id: 10, title: 'Neon', description: 'Ne' },
-  { id: 11, title: 'Sodium', description: 'Na' },
-  { id: 12, title: 'Magnesium', description: 'Mg' },
-  { id: 13, title: 'Aluminum', description: 'Al' },
-  { id: 14, title: 'Silicon', description: 'Si' },
-  { id: 15, title: 'Phosphorus', description: 'P' },
-  { id: 16, title: 'Sulfur', description: 'S' },
-  { id: 17, title: 'Chlorine', description: 'Cl' },
-  { id: 18, title: 'Argon', description: 'Ar' },
-  { id: 19, title: 'Potassium', description: 'K' },
-  { id: 20, title: 'Calcium', description: 'Ca' },
-];
+// const ELEMENT_DATA: Post[] = [
+//   {
+//     userId: 1,
+//     id: 1,
+//     title: 'H',
+//     body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
+//   },
+//   {
+//     userId: 1,
+//     id: 1,
+//     title: 'H',
+//     body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
+//   },
+//   {
+//     userId: 1,
+//     id: 1,
+//     title: 'H',
+//     body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
+//   },
+//   {
+//     userId: 1,
+//     id: 1,
+//     title: 'H',
+//     body: 'quia et suscipit\nsuscipit recusandae consequuntur expedita et cum\nreprehenderit molestiae ut ut quas totam\nnostrum rerum est autem sunt rem eveniet architecto',
+//   },
+// ];
 
 @Component({
   selector: 'app-posts-table',
@@ -40,8 +44,17 @@ const ELEMENT_DATA: PeriodicElement[] = [
   styleUrls: ['./posts-table.component.scss'],
 })
 export class PostsTableComponent implements OnDestroy, AfterViewInit, OnInit {
-  public displayedColumns: string[] = ['id', 'title', 'description', 'actions'];
-  public dataSource = new MatTableDataSource<PeriodicElement>(ELEMENT_DATA);
+  public ELEMENT_DATA: Post[];
+  private getPostsSubscription: any;
+  public displayedColumns: string[] = [
+    'id',
+    'userId',
+    'title',
+    'description',
+    'actions',
+  ];
+  //MatTableDataSource<Post>
+  public dataSource: MatTableDataSource<Post>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
 
@@ -50,17 +63,19 @@ export class PostsTableComponent implements OnDestroy, AfterViewInit, OnInit {
     private postDataService: PostsDataService
   ) {}
   ngOnInit(): void {
-    this.postDataService.getPosts().subscribe({
-      next: (v) => console.log(v),
-      error: (e) => console.log(e.name),
+    this.getPostsSubscription = this.postDataService.getPosts().subscribe({
+      next: (posts) => {
+        this.ELEMENT_DATA = posts;
+        this.dataSource = new MatTableDataSource<Post>(this.ELEMENT_DATA);
+        this.dataSource.paginator = this.paginator;
+      },
+      error: (error) => console.log(error),
     });
   }
 
-  ngAfterViewInit() {
-    this.dataSource.paginator = this.paginator;
-  }
+  ngAfterViewInit() {}
 
-  goToPage(element: PeriodicElement, event: any): void {
+  goToPage(element: Post, event: any): void {
     const action: string = event.target.innerText;
 
     switch (action) {
