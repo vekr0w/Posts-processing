@@ -14,8 +14,13 @@ form {
     display: flex;
     flex-flow: column;
     gap: 5px;
+    .text-area-title {
+      height: 50px;
+    }
+    .text-area-description {
+      height: 150px;
+    }
   }
-
   mat-label {
     color: #ffffff;
   }
