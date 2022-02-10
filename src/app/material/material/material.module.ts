@@ -18,7 +18,7 @@ import { TextFieldModule } from '@angular/cdk/text-field';
     MatSortModule,
     MatPaginatorModule,
     MatInputModule,
-    TextFieldModule,
+    TextFieldModule
   ],
 })
 export class MaterialModule {}

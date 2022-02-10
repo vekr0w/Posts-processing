@@ -6,4 +6,6 @@ import { Component } from '@angular/core';
   styleUrls: ['./posts.component.scss'],
   host: { style: 'width:90%;' },
 })
-export class PostsComponent {}
+export class PostsComponent {
+  constructor(){}
+}

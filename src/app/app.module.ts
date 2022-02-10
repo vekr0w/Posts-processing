@@ -17,7 +17,7 @@ import { MaterialModule } from './material/material/material.module';
     PostsModule,
     NoopAnimationsModule,
     MaterialModule,
-    HttpClientModule
+    HttpClientModule,
   ],
   providers: [],
   bootstrap: [AppComponent],

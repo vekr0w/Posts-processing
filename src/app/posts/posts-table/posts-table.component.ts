@@ -18,8 +18,9 @@ export class PostsTableComponent implements OnDestroy, OnInit {
     'userId',
     'title',
     'description',
-    'actions',
+    'actions'
   ];
+
   public dataSource: MatTableDataSource<Post>;
 
   @ViewChild(MatPaginator) paginator: MatPaginator;

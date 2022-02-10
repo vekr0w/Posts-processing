@@ -27,7 +27,7 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
     id: new FormControl(0),
     userId: new FormControl(0),
     title: new FormControl('', Validators.required),
-    body: new FormControl('', Validators.required),
+    body: new FormControl('', Validators.required)
   });
 
   constructor(
