@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-posts',
@@ -6,8 +6,4 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./posts.component.scss'],
   host: { style: 'width:90%;' },
 })
-export class PostsComponent implements OnInit {
-  constructor() {}
-
-  ngOnInit(): void {}
-}
+export class PostsComponent {}

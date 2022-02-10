@@ -11,10 +11,10 @@ export class HeaderComponent implements OnInit {
 
   ngOnInit(): void {}
 
-  goToHome() {
+  public goToHome(): void {
     this.router.navigateByUrl('/posts');
   }
-  goToAddPost() {
+  public goToAddPost(): void {
     this.router.navigateByUrl('/posts/add');
   }
 }

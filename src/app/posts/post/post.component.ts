@@ -69,7 +69,7 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  sendUpdatedPostData() {
+  public sendUpdatedPostData(): void {
     this.postsDataService
       .updatePost(this.postId, this.postForm.value)
       .pipe(takeUntil(this.unsubscribe$))
@@ -79,7 +79,7 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
     this.router.navigateByUrl('posts');
   }
 
-  sendPost() {
+  public sendPost(): void {
     if (this.postForm.valid) {
       this.postsDataService.sendNewPost(this.postForm.value).subscribe({
         error: (error) => alert(error),
