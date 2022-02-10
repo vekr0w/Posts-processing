@@ -1,0 +1,73 @@
+<form [formGroup]="postForm" *ngIf="postForm">
+  <div class="form-wrapper">
+    <div class="input-wrapper">
+      <mat-label for="postId">post ID</mat-label>
+      <input
+        matInput
+        id="postId"
+        class="input-field"
+        type="number"
+        formControlName="id"
+      />
+    </div>
+    <div class="input-wrapper">
+      <mat-label for="userId">user ID</mat-label>
+      <input
+        matInput
+        id="userId"
+        class="input-field"
+        type="number"
+        formControlName="userId"
+      />
+    </div>
+    <div class="input-wrapper">
+      <mat-label for="title">Title</mat-label>
+      <textarea
+        matInput
+        id="title"
+        class="input-field text-area-title"
+        type="text"
+        formControlName="title"
+      ></textarea>
+    </div>
+    <div class="input-wrapper">
+      <mat-label for="status">Description</mat-label>
+      <textarea
+        matInput
+        id="status"
+        class="input-field text-area-description"
+        type="text"
+        formControlName="body"
+      ></textarea>
+    </div>
+
+    <div class="controls">
+      <button
+        *ngIf="canAddNew"
+        mat-button
+        class="button-primary"
+        (click)="sendPost()"
+        type="button"
+      >
+        Add
+      </button>
+      <a
+        *ngIf="!isEditPage && !canAddNew"
+        mat-button
+        class="button-primary"
+        type="button"
+        (click)="goToEditPage(postId)"
+        >Edit</a
+      >
+      <button
+        *ngIf="isEditPage"
+        mat-button
+        class="button-primary"
+        (click)="sendUpdatedPostData()"
+        type="button"
+      >
+        Done
+      </button>
+    </div>
+  </div>
+</form>
