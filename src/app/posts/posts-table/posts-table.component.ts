@@ -4,7 +4,8 @@ import { MatTableDataSource } from '@angular/material/table';
 import { Post } from '../shared/models/post.model';
 import { Router } from '@angular/router';
 import { PostsDataService } from '../shared/services/posts-data.service';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, takeUntil } from 'rxjs'
+
 @Component({
   selector: 'app-posts-table',
   templateUrl: './posts-table.component.html',
