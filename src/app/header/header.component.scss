@@ -1,12 +1,14 @@
 @import url(../styles/_shared-classes.scss);
 
 nav {
+  
   ul {
     list-style-type: none;
     padding: 0;
     margin: 0;
   }
-  .button-header{
+
+  .button-header {
     margin-left: 5px;
   }
 }

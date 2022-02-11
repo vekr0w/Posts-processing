@@ -4,6 +4,7 @@
   display: flex;
   flex-flow: column;
   gap: 20px;
+
   .input-wrapper {
     margin: auto;
     width: 50%;
@@ -11,16 +12,20 @@
     display: flex;
     flex-flow: column;
     gap: 5px;
+
     .text-area-title {
       height: 50px;
     }
+
     .text-area-description {
       height: 150px;
     }
   }
+
   mat-label {
     color: #ffffff;
   }
+
   .mat-input-element {
     font-size: 16px;
     font-weight: 500;
