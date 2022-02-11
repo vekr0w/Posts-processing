@@ -49,10 +49,6 @@ export class PostsTableComponent implements OnDestroy, OnInit {
     this.router.navigateByUrl(`posts/${id}`);
   }
 
-  public truncateTextContent(text: string, index: number): string {
-    return text.length > index ? `${text.slice(0, index)}...` : text;
-  }
-
   private dataSourceUpdate(): void {
     this.dataSource = new MatTableDataSource<Post>(this.ELEMENT_DATA);
     this.dataSource.paginator = this.paginator;
