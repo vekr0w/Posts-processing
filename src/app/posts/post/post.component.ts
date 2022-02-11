@@ -18,12 +18,14 @@ import { PostsDataService } from '../shared/services/posts-data.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
-  private unsubscribe$ = new Subject();
-  public isEditable = false;
-  public isEditPage = this.router.url.includes('edit');
-  public canAddNew = this.router.url.includes('add');
-  public postId = Number(this.activatedRoute.snapshot.paramMap.get('id'));
-  public postForm = new FormGroup({
+  private unsubscribe$: Subject<any> = new Subject();
+  public isEditable: boolean = false;
+  public isEditPage: boolean = this.router.url.includes('edit');
+  public canAddNew: boolean = this.router.url.includes('add');
+  public postId: number = Number(
+    this.activatedRoute.snapshot.paramMap.get('id')
+  );
+  public postForm: FormGroup = new FormGroup({
     id: new FormControl(0),
     userId: new FormControl(0),
     title: new FormControl('', Validators.required),
@@ -90,16 +92,15 @@ export class PostComponent implements OnInit, AfterViewInit, OnDestroy {
     }
   }
 
-  goToEditPage(id: any): void {
+  public goToEditPage(id: any): void {
     this.router.navigateByUrl(`posts/edit/${id}`);
   }
 
-  canEdit(): boolean {
-    const test = this.isEditPage || this.isEditable;
-    return test;
+  public canEdit(): boolean {
+    return this.isEditPage || this.isEditable;
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.unsubscribe$.next(true);
     this.unsubscribe$.complete();
   }
